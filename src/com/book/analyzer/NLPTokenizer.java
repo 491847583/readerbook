@@ -55,7 +55,7 @@ public class NLPTokenizer extends Tokenizer{
 			//记录分词的最后位置
 			endPosition = word.getEnd();
 			//记录词元分类
-			typeAtt.setType("CHN");
+			typeAtt.setType(word.getType());
 			return true;
 		}
 	}

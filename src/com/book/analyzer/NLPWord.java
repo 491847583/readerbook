@@ -8,12 +8,23 @@ public class NLPWord {
 	
 	private String trem;
 	
+	private String type;
+	
 	public NLPWord(){}
 	
-	public NLPWord(int start,int end,String trem){
+	public NLPWord(int start,int end,String trem,String type){
 		this.start = start;
 		this.end = end;
 		this.trem = trem;
+		this.type = type;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public int getStart() {

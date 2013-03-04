@@ -2,25 +2,27 @@ package com.book.analyzer;
 
 import java.io.Reader;
 import java.util.LinkedList;
+
+import kevin.zhang.NLPIR;
+
 import org.apache.commons.io.IOUtils;
 
 public class NLPSegmenter {
 
-	private static NLPIR nlp = new NLPIR();
+	private static NLPIR testNLPIR = new NLPIR();
 
-	@SuppressWarnings("static-access")
 	public String nlpSiplt(Reader reader) {
 		try{
 			String argu = "";
-			@SuppressWarnings("unused")
-			String encoding = "utf-8";
-			if (nlp.NLPIR_Init(argu.getBytes("utf-8"), 1) == false) {
-				System.err.println("Init Fail!");
+			if (testNLPIR.NLPIR_Init(argu.getBytes("UTF-8"),1) == false)
+			{
+				System.out.println("Init Fail!");
 				return null;
 			}
-			
-			byte nativeBytes[] = nlp.NLPIR_ParagraphProcess(IOUtils.toByteArray(reader), 1);
-			return new String(nativeBytes, 0, nativeBytes.length, "utf-8").trim();
+			byte nativeBytes[] = testNLPIR.NLPIR_ParagraphProcess(IOUtils.toByteArray(reader), 1);
+			String nativeStr = new String(nativeBytes, 0, nativeBytes.length, "UTF-8");
+			//System.out.println("分词结果为："+nativeStr);
+			return nativeStr;
 		
 		}catch(Exception e){
 			e.printStackTrace();
@@ -29,17 +31,20 @@ public class NLPSegmenter {
 	}
 
 	public LinkedList<NLPWord> getLink(String str) {
-		str = str.replaceAll("[+[/]*[A-Za-z]*[0-9]]", "");
+		if(str==null){
+			return null;
+		}
+		str = str.trim();
 		String arr[] = str.split(" ");
 		LinkedList<NLPWord> list = new LinkedList<NLPWord>();
 		int index = 0;
 		for (String a : arr) {
-			System.out.println(a);
+			String arr1[] = a.split("[/]");
 			if (index == 0 && a.length() == 1) {
-				list.add(new NLPWord(index, index + 1, a));
+				list.add(new NLPWord(index, index + 1, arr1[0],arr1[1]));
 				index = index + a.length();
 			} else {
-				list.add(new NLPWord(index, index + a.length(), a));
+				list.add(new NLPWord(index, index + a.length(),arr1[0],arr1[1]));
 				index = index + a.length();
 			}
 		}
